@@ -1,5 +1,6 @@
 package br.edu.uniritter.monitors.service;
 
+import br.edu.uniritter.monitors.model.Reading;
 import br.edu.uniritter.monitors.model.Rule;
 import br.edu.uniritter.monitors.repository.RuleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.security.InvalidParameterException;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -62,5 +63,11 @@ public class RuleService {
         }
 
         ruleRepository.delete(localRule);
+    }
+
+    public List<Rule> getRulesForReading(Reading reading) {
+        List<Rule> rules = ruleRepository.findByOriginAndMetric(reading.getOrigin(), reading.getMetric());
+
+        return rules;
     }
 }

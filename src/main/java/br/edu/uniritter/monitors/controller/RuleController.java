@@ -2,7 +2,6 @@ package br.edu.uniritter.monitors.controller;
 
 import br.edu.uniritter.monitors.model.Rule;
 import br.edu.uniritter.monitors.service.RuleService;
-import hello.Greeting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

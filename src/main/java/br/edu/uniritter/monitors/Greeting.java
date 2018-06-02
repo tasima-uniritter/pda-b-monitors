@@ -1,4 +1,4 @@
-package hello;
+package br.edu.uniritter.monitors;
 
 public class Greeting {
 

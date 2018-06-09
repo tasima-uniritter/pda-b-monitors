@@ -22,8 +22,7 @@ public class RuleService {
     }
 
     public Rule get(long id) {
-//        Rule localRule = ruleRepository.findOne(id);
-        Rule localRule = new Rule();
+        Rule localRule = ruleRepository.getOne(id);
         localRule.setMetric("testeMetrica");
         localRule.setOrigin("testeOrigin");
 
@@ -34,8 +33,8 @@ public class RuleService {
         return localRule;
     }
 
-    public void create(Rule rule) {
-        ruleRepository.save(rule);
+    public Rule create(Rule rule) {
+        return ruleRepository.save(rule);
     }
 
     public Rule update(long id, Rule rule) {

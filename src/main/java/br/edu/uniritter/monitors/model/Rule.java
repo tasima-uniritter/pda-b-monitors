@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Rule {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column(nullable = false)

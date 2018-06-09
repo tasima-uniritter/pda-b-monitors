@@ -27,4 +27,9 @@ public class RuleController {
         Rule rule = ruleService.get(id);
         return ResponseEntity.ok(rule);
     }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/rule")
+    public ResponseEntity<Rule> create(@RequestBody Rule rule) {
+        return ResponseEntity.ok(ruleService.create(rule));
+    }
 }

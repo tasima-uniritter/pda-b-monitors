@@ -10,15 +10,17 @@ import org.springframework.stereotype.Component;
 public class MonitorRoute extends RouteBuilder {
     @Override
     public void configure() {
-        from("amq:{{income.connection}}")
+        from("amqp:queue:b-metrics-monitor")
+                .log("Mensagem recebida")
                 .unmarshal().json(JsonLibrary.Gson, Reading.class)
                 .bean(MonitorProcessor.class, "process")
                 .choice()
                     .when(simple("${header.shouldAlert} == true"))
                         .marshal().json(JsonLibrary.Gson, true)
-                        .to("amq:{{outcome.connection}}")
+                        .to("amqp:queue:b-monitor-alerts")
+                        .log("MANDOU PRA OUTRA FILA!!!!!!!!!!!!!1!!!!!")
                     .otherwise()
-                    // log?
+                        .log("Não conseguiu enviar pra outra fila.")
                 .end();
     }
 }

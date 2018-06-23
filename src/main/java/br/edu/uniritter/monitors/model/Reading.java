@@ -7,7 +7,7 @@ public class Reading {
     private String origin;
     private String metric;
     private int value;
-    private Timestamp timestamp;
+    private String timestamp;
     private String rule;
     private int threshold;
 
@@ -35,11 +35,11 @@ public class Reading {
         this.value = value;
     }
 
-    public Timestamp getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -57,5 +57,11 @@ public class Reading {
 
     public void setThreshold(int threshold) {
         this.threshold = threshold;
+    }
+
+    @Override
+    public String toString() {
+        return "Meu objeto: " + this.metric + " / " + this.origin + " / "
+                + this.value + " / " + this.threshold+ " / " + this.timestamp;
     }
 }

@@ -8,8 +8,6 @@ public class Reading {
     private String metric;
     private int value;
     private String timestamp;
-    private String rule;
-    private int threshold;
 
     public String getOrigin() {
         return origin;
@@ -43,25 +41,10 @@ public class Reading {
         this.timestamp = timestamp;
     }
 
-    public String getRule() {
-        return rule;
-    }
-
-    public void setRule(String rule) {
-        this.rule = rule;
-    }
-
-    public int getThreshold() {
-        return threshold;
-    }
-
-    public void setThreshold(int threshold) {
-        this.threshold = threshold;
-    }
-
     @Override
     public String toString() {
-        return "Meu objeto: " + this.metric + " / " + this.origin + " / "
-                + this.value + " / " + this.threshold+ " / " + this.timestamp;
+        return "Leitura(origin/metric/value/timestamp): "
+                + this.origin + " / " + this.metric + " / "
+                + this.value + " / " + this.timestamp;
     }
 }

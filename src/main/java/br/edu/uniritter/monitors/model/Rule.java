@@ -22,6 +22,14 @@ public class Rule {
     @Column(nullable = false)
     private String rule;
 
+    // control fields
+
+    @Column(nullable = false)
+    private int timeout;
+
+    @Column(nullable = false)
+    private int lastReading;
+
     public long getId() {
         return id;
     }
@@ -60,5 +68,21 @@ public class Rule {
 
     public void setRule(String rule) {
         this.rule = rule;
+    }
+
+    public Integer getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(Integer timeout) {
+        this.timeout = timeout;
+    }
+
+    public Integer getLastReading() {
+        return lastReading;
+    }
+
+    public void setLastReading(Integer lastReading) {
+        this.lastReading = lastReading;
     }
 }

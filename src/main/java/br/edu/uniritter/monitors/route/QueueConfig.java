@@ -31,7 +31,5 @@ public class QueueConfig {
         String uri = "amqps://" + AMQP_SERVICE_HOST + ":" + AMQP_SERVICE_PORT;
 
         return new AMQPConnectionDetails(uri, AMQP_SERVICE_USERNAME, senhaMQ);
-
-        //teste
     }
 }

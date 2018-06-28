@@ -24,8 +24,7 @@ public class QueueConfig {
 
         String senhaMQ = dotenv.get("AMQP_SERVICE_PASSWORD");
 
-        if (senhaMQ.length() == 0)
-        {
+        if (senhaMQ.length() == 0) {
             throw new IllegalArgumentException("Missing AMQP_SERVICE_PASSWORD environment variable");
         }
 

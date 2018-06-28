@@ -22,15 +22,13 @@ public class RuleService {
     }
 
     public Rule get(long id) {
-        Rule localRule = ruleRepository.getOne(id);
-        localRule.setMetric("testeMetrica");
-        localRule.setOrigin("testeOrigin");
+        Optional<Rule> localRule = ruleRepository.findById(id);
 
-        if (localRule == null) {
+        if (!localRule.isPresent()) {
             throw new InvalidParameterException();
         }
 
-        return localRule;
+        return localRule.get();
     }
 
     public Rule create(Rule rule) {
@@ -49,9 +47,7 @@ public class RuleService {
         localRule.setThreshold(rule.getThreshold());
         localRule.setRule(rule.getRule());
 
-        ruleRepository.save(localRule);
-
-        return localRule;
+        return ruleRepository.save(localRule);
     }
 
     public void delete(long id) {

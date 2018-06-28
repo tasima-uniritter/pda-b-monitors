@@ -3,6 +3,7 @@ package br.edu.uniritter.monitors.controller;
 import br.edu.uniritter.monitors.model.Rule;
 import br.edu.uniritter.monitors.service.RuleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,19 +18,50 @@ public class RuleController {
     @Autowired
     private RuleService ruleService;
 
-    @RequestMapping(method = RequestMethod.GET, path = "/rule")
+    @GetMapping(path = "/rule")
     public ResponseEntity<List<Rule>> getAll() {
-        return ResponseEntity.ok(ruleService.getAll());
+        try {
+            return ResponseEntity.ok(ruleService.getAll());
+        } catch (Exception ex) {
+            return new ResponseEntity(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @RequestMapping(method = RequestMethod.GET, path = "/rule/{id}")
+    @GetMapping(path = "/rule/{id}")
     public ResponseEntity<Rule> getById(@PathVariable("id") long id) {
-        Rule rule = ruleService.get(id);
-        return ResponseEntity.ok(rule);
+        try {
+            Rule rule = ruleService.get(id);
+            return ResponseEntity.ok(rule);
+        } catch (Exception ex) {
+            return new ResponseEntity(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/rule")
+    @PostMapping(path = "/rule")
     public ResponseEntity<Rule> create(@RequestBody Rule rule) {
-        return ResponseEntity.ok(ruleService.create(rule));
+        try {
+            return ResponseEntity.ok(ruleService.create(rule));
+        } catch (Exception ex) {
+            return new ResponseEntity(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/rule/{organizationId}")
+    public ResponseEntity<Rule> update(@PathVariable("organizationId") long id, @RequestBody Rule rule) throws Exception {
+        try {
+            return new ResponseEntity<>(ruleService.update(id, rule), HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping(path = "/rule/{id}")
+    public ResponseEntity delete(@PathVariable("id") long id) {
+        try {
+            ruleService.delete(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

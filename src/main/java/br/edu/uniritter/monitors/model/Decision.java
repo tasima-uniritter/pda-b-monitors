@@ -1,9 +1,12 @@
 package br.edu.uniritter.monitors.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Decision {
     private Reading reading;
-    private Rule rule;
-    private Alert alert;
+    private List<Rule> rules;
+    private List<Rule> alertRules = new ArrayList<>();
 
     public Decision(Reading reading) {
         this.reading = reading;
@@ -17,19 +20,19 @@ public class Decision {
         this.reading = reading;
     }
 
-    public Rule getRule() {
-        return rule;
+    public List<Rule> getRules() {
+        return rules;
     }
 
-    public void setRule(Rule rule) {
-        this.rule = rule;
+    public void setRules(List<Rule> rules) {
+        this.rules = rules;
     }
 
-    public Alert getAlert() {
-        return alert;
+    public List<Rule> getAlertRules() {
+        return alertRules;
     }
 
-    public void setAlert(Alert alert) {
-        this.alert = alert;
+    public void setAlertRules(List<Rule> alertRules) {
+        this.alertRules = alertRules;
     }
 }

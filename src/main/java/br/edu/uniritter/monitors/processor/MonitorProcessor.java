@@ -4,11 +4,19 @@ import br.edu.uniritter.monitors.model.Alert;
 import br.edu.uniritter.monitors.model.Decision;
 import br.edu.uniritter.monitors.model.Reading;
 import br.edu.uniritter.monitors.model.Rule;
+import br.edu.uniritter.monitors.service.RuleService;
 import org.apache.camel.Exchange;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class MonitorProcessor {
+    @Autowired
+    private RuleService ruleService;
+
     public void startDecision(Exchange exchange) {
         Reading reading = exchange.getIn().getBody(Reading.class);
         Decision decision = new Decision(reading);
@@ -20,68 +28,82 @@ public class MonitorProcessor {
 
         Reading reading = decision.getReading();
 
-        // TODO: find if there is a rule for reading.origin and reading.metric
-        // Rule rule = null;
-        Rule rule = new Rule();
-        rule.setMetric("memory");
-        rule.setOrigin("server1");
-        rule.setRule(">=");
-        rule.setThreshold(30000);
+        List<Rule> rules = ruleService.getRulesForReading(reading);
 
-        exchange.getOut().setHeader("hasRule", (rule != null));
-        decision.setRule(rule);
+        exchange.getOut().setHeader("hasRule", (!rules.isEmpty()));
+        decision.setRules(rules);
 
         exchange.getOut().setBody(decision);
     }
 
-    public void checkRule(Exchange exchange) {
+    public void checkRules(Exchange exchange) {
         Decision decision = exchange.getIn().getBody(Decision.class);
 
         Reading reading = decision.getReading();
-        Rule rule = decision.getRule();
+        List<Rule> rules = decision.getRules();
 
-        boolean toAlert = false;
-        switch (rule.getRule()) {
-            case ">":
-                toAlert = reading.getValue() > rule.getThreshold();
-                break;
-            case ">=":
-                toAlert = reading.getValue() >= rule.getThreshold();
-                break;
-            case "<":
-                toAlert = reading.getValue() < rule.getThreshold();
-                break;
-            case "<=":
-                toAlert = reading.getValue() <= rule.getThreshold();
-                break;
-            case "==":
-                toAlert = reading.getValue() == rule.getThreshold();
-                break;
-            case "!=":
-                toAlert = reading.getValue() != rule.getThreshold();
-                break;
+        List<Rule> alertRules = new ArrayList<>();
+        for (Rule rule : rules) {
+            switch (rule.getRule()) {
+                case ">":
+                    if (reading.getValue() > rule.getThreshold()) {
+                        alertRules.add(rule);
+                    }
+                    break;
+                case ">=":
+                    if (reading.getValue() >= rule.getThreshold()) {
+                        alertRules.add(rule);
+                    }
+                    break;
+                case "<":
+                    if (reading.getValue() < rule.getThreshold()) {
+                        alertRules.add(rule);
+                    }
+                    break;
+                case "<=":
+                    if (reading.getValue() <= rule.getThreshold()) {
+                        alertRules.add(rule);
+                    }
+                    break;
+                case "==":
+                    if (reading.getValue() == rule.getThreshold()) {
+                        alertRules.add(rule);
+                    }
+                    break;
+                case "!=":
+                    if (reading.getValue() != rule.getThreshold()) {
+                        alertRules.add(rule);
+                    }
+                    break;
+            }
         }
-        exchange.getOut().setHeader("toAlert", toAlert);
+
+        exchange.getOut().setHeader("toAlert", !alertRules.isEmpty());
+        decision.setAlertRules(alertRules);
 
         exchange.getOut().setBody(decision);
     }
 
-    public void makeAlert(Exchange exchange) {
+    public void makeAlerts(Exchange exchange) {
         Decision decision = exchange.getIn().getBody(Decision.class);
 
         Reading reading = decision.getReading();
-        Rule rule = decision.getRule();
+        List<Rule> rules = decision.getAlertRules();
 
-        Alert alert = new Alert();
-        alert.setOrigin(reading.getOrigin());
-        alert.setMetric(reading.getMetric());
-        alert.setValue(reading.getValue());
-        alert.setTimestamp(reading.getTimestamp());
-        alert.setRule(rule.getRule());
-        alert.setThreshold(rule.getThreshold());
+        List<Alert> alerts = new ArrayList<>();
+        for (Rule rule : rules) {
+            Alert alert = new Alert();
 
-        decision.setAlert(alert);
+            alert.setOrigin(reading.getOrigin());
+            alert.setMetric(reading.getMetric());
+            alert.setValue(reading.getValue());
+            alert.setTimestamp(reading.getTimestamp());
+            alert.setRule(rule.getRule());
+            alert.setThreshold(rule.getThreshold());
 
-        exchange.getOut().setBody(decision);
+            alerts.add(alert);
+        }
+
+        exchange.getOut().setBody(alerts);
     }
 }

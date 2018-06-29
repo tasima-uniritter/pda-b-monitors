@@ -1,8 +1,14 @@
 language: java
-before_install:
-  - cd java
-  
+
 install: gradle check
+
+script:
+# Display Gradle, Groovy, JVM and other versions
+  - ./gradlew --version
+  
+# Build JUnit 5
+  - ./gradlew ${SCAN} build ${INSTALL}
+
 
 cache:
   directories:

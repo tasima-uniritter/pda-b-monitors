@@ -1,5 +1,5 @@
 language: java
-install: gradle
+install: gradle check
 
 #deploy:
 #  provider: heroku

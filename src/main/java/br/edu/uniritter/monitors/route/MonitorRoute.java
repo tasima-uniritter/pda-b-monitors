@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class MonitorRoute extends RouteBuilder {
     @Override
     public void configure() {
-        from("amqp:queue:b-metrics-monitor")
+        from("{{route.from.metric}}")
                 .log("Mensagem recebida")
                 .unmarshal().json(JsonLibrary.Gson, Reading.class)
                 .bean(MonitorProcessor.class, "startDecision")
@@ -26,7 +26,7 @@ public class MonitorRoute extends RouteBuilder {
                                 .split(body())
                                 .marshal().json(JsonLibrary.Gson, true)
                                 .log("enviando alerta")
-                                .to("amqp:queue:b-monitor-alerts")
+                                .to("{{route.to.alert}}")
                             // can't use with split for some reason...
                             // .otherwise()
                             // .log("não alertar")
@@ -34,5 +34,8 @@ public class MonitorRoute extends RouteBuilder {
                     .otherwise()
                         .log("sem regra")
                 .end();
+
+        from("amqp:queue:b-metrics-monitor")
+                .log("teste");
     }
 }

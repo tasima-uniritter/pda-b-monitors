@@ -17,6 +17,10 @@ public class RuleService {
     @Autowired
     private RuleRepository ruleRepository;
 
+    public RuleService(RuleRepository ruleRepository) {
+        this.ruleRepository = ruleRepository;
+    }
+
     public List<Rule> getAll() {
         return ruleRepository.findAll();
     }

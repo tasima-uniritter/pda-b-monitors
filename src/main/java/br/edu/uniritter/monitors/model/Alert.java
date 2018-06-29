@@ -4,8 +4,8 @@ public class Alert {
     private String origin;
     private String metric;
     private int value;
-    private String rule;
     private String timestamp;
+    private String rule;
     private int threshold;
 
     public String getOrigin() {

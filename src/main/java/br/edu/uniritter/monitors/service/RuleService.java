@@ -61,8 +61,6 @@ public class RuleService {
     }
 
     public List<Rule> getRulesForReading(Reading reading) {
-        List<Rule> rules = ruleRepository.findByOriginAndMetric(reading.getOrigin(), reading.getMetric());
-
-        return rules;
+        return ruleRepository.findByOriginAndMetric(reading.getOrigin(), reading.getMetric());
     }
 }

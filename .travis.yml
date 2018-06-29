@@ -2,8 +2,6 @@ language: java
 jdk:
   - oraclejdk8
 
-install: gradle assemble
-
 // build.gradle
 apply plugin: "java"
 sourceCompatibility = 1.8

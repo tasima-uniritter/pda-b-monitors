@@ -30,4 +30,4 @@ build
 hs_err_pid*
 
 # H2
-.db
+*.db

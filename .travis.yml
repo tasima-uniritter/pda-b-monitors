@@ -1,4 +1,7 @@
 language: java
+before_install:
+  - cd java
+  
 install: gradle check
 
 cache:

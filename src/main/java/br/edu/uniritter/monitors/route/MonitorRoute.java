@@ -35,7 +35,7 @@ public class MonitorRoute extends RouteBuilder {
                         .log("sem regra")
                 .end();
 
-        from("timer://foo?fixedRate=true&period=5s")
+        from("timer://foo?fixedRate=true&period=60s")
                 .log("timer")
                 .bean(MonitorProcessor.class, "getHeartbeats")
                 .choice()

@@ -1,21 +1,23 @@
 package br.edu.uniritter.monitors.processor;
 
-import br.edu.uniritter.monitors.model.Alert;
-import br.edu.uniritter.monitors.model.Decision;
-import br.edu.uniritter.monitors.model.Reading;
-import br.edu.uniritter.monitors.model.Rule;
+import br.edu.uniritter.monitors.model.*;
+import br.edu.uniritter.monitors.service.HeartbeatService;
 import br.edu.uniritter.monitors.service.RuleService;
+import br.edu.uniritter.monitors.service.TimeoutService;
 import org.apache.camel.Exchange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class MonitorProcessor {
     @Autowired
     private RuleService ruleService;
+    @Autowired
+    private HeartbeatService heartbeatService;
+    @Autowired
+    private TimeoutService timeoutService;
 
     public void startDecision(Exchange exchange) {
         Reading reading = exchange.getIn().getBody(Reading.class);
@@ -104,6 +106,32 @@ public class MonitorProcessor {
             alerts.add(alert);
         }
 
+        exchange.getOut().setBody(alerts);
+    }
+
+    public void getHeartbeats(Exchange exchange) {
+        List<Timeout> timeouts = timeoutService.getAll();
+
+        List<Alert> alerts = new ArrayList<>();
+        for (Timeout timeout : timeouts) {
+            Heartbeat heartbeat = heartbeatService.get(timeout.getOrigin(), timeout.getMetric());
+
+            Calendar now = Calendar.getInstance();
+            if ((heartbeat.getLastReading() + timeout.getValueInMillis()) <= now.getTimeInMillis()) {
+                Alert alert = new Alert();
+
+                alert.setOrigin(timeout.getOrigin());
+                alert.setMetric(timeout.getMetric());
+                alert.setRule("timeout");
+                alert.setThreshold(timeout.getValue());
+                alert.setValue(now.getTimeInMillis() - heartbeat.getLastReading());
+                alert.setTimestamp(now.toString());
+
+                alerts.add(alert);
+            }
+        }
+
+        exchange.getOut().setHeader("toAlert", !alerts.isEmpty());
         exchange.getOut().setBody(alerts);
     }
 }

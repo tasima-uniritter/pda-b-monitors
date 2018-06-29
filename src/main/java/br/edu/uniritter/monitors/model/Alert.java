@@ -3,10 +3,10 @@ package br.edu.uniritter.monitors.model;
 public class Alert {
     private String origin;
     private String metric;
-    private int value;
+    private long value;
     private String timestamp;
     private String rule;
-    private int threshold;
+    private long threshold;
 
     public String getOrigin() {
         return origin;
@@ -24,11 +24,11 @@ public class Alert {
         this.metric = metric;
     }
 
-    public int getValue() {
+    public long getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(long value) {
         this.value = value;
     }
 
@@ -48,11 +48,11 @@ public class Alert {
         this.timestamp = timestamp;
     }
 
-    public int getThreshold() {
+    public long getThreshold() {
         return threshold;
     }
 
-    public void setThreshold(int threshold) {
+    public void setThreshold(long threshold) {
         this.threshold = threshold;
     }
 }

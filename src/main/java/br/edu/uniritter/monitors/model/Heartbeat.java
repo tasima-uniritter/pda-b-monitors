@@ -17,7 +17,7 @@ public class Heartbeat {
     private String metric;
 
     @Column(nullable = false)
-    private int lastReading;
+    private long lastReading;
 
     public long getId() {
         return id;
@@ -43,11 +43,11 @@ public class Heartbeat {
         this.metric = metric;
     }
 
-    public int getLastReading() {
+    public long getLastReading() {
         return lastReading;
     }
 
-    public void setLastReading(int lastReading) {
+    public void setLastReading(long lastReading) {
         this.lastReading = lastReading;
     }
 }

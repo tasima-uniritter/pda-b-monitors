@@ -3,8 +3,8 @@ package br.edu.uniritter.monitors.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "RULE")
-public class Rule {
+@Table(name = "TIMEOUT")
+public class Timeout {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,10 +17,7 @@ public class Rule {
     private String metric;
 
     @Column(nullable = false)
-    private int threshold;
-
-    @Column(nullable = false)
-    private String rule;
+    private long value;
 
     public long getId() {
         return id;
@@ -46,19 +43,15 @@ public class Rule {
         this.metric = metric;
     }
 
-    public int getThreshold() {
-        return threshold;
+    public long getValue() {
+        return value;
     }
 
-    public void setThreshold(int threshold) {
-        this.threshold = threshold;
+    public void setValue(long value) {
+        this.value = value;
     }
 
-    public String getRule() {
-        return rule;
-    }
-
-    public void setRule(String rule) {
-        this.rule = rule;
+    public long getValueInMillis() {
+        return value * 1000;
     }
 }

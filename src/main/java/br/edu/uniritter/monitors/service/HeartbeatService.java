@@ -19,7 +19,7 @@ public class HeartbeatService {
         return heartbeatRepository.save(heartbeat);
     }
 
-    private Heartbeat update(Heartbeat oldHeartbeat, int lastReading) {
+    private Heartbeat update(Heartbeat oldHeartbeat, long lastReading) {
         oldHeartbeat.setLastReading(lastReading);
         return heartbeatRepository.save(oldHeartbeat);
     }
@@ -35,9 +35,13 @@ public class HeartbeatService {
         }
     }
 
-    public Heartbeat getHeartbeat(String origin, String metric) {
+    public Heartbeat get(String origin, String metric) {
         List<Heartbeat> heartbeats = heartbeatRepository.findByOriginAndMetric(origin, metric);
 
-        return heartbeats.get(0);
+        return heartbeats.isEmpty() ? null : heartbeats.get(0);
+    }
+
+    public List<Heartbeat> getAll() {
+        return heartbeatRepository.findAll();
     }
 }

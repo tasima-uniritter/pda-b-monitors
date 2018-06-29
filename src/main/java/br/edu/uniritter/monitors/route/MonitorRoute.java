@@ -35,7 +35,16 @@ public class MonitorRoute extends RouteBuilder {
                         .log("sem regra")
                 .end();
 
-        from("amqp:queue:b-metrics-monitor")
-                .log("teste");
+        from("timer://foo?fixedRate=true&period=5s")
+                .log("timer")
+                .bean(MonitorProcessor.class, "getHeartbeats")
+                .choice()
+                    .when(simple("${header.toAlert} == true"))
+                        .log("alertar timeout")
+                        .split(body())
+                        .marshal().json(JsonLibrary.Gson, true)
+                        .log("enviando alerta timeout")
+                        .to("{{route.to.alert}}")
+                .end();
     }
 }

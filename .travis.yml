@@ -2,7 +2,10 @@ language: java
 jdk:
   - oraclejdk8
 
-install: gradle check
+#install: gradle check
+
+script:
+  - ./gradlew clean build test check
 
 cache:
   directories:

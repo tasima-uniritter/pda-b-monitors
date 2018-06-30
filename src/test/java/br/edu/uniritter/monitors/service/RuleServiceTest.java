@@ -25,7 +25,7 @@ public class RuleServiceTest {
     private static final long FIRST_ID = 1;
 
     @org.junit.Rule
-    public ExpectedException eReunião {0} fora do CAS em local onde não havia ponto para registroxpectedEx = ExpectedException.none();
+    public ExpectedException expectedEx = ExpectedException.none();
 
     @Before
     public void setUp() {
@@ -40,7 +40,7 @@ public class RuleServiceTest {
         Mockito.doReturn(expectedRules).when(ruleRepository).findAll();
 
         List<Rule> rules = new ArrayList<>(ruleService.getAll());
-        assertThat(rules.size()).isGreaterThan(10);
+        assertThat(rules.size()).isGreaterThan(1);
     }
 
     @Test
